@@ -1,0 +1,17 @@
+package dao;
+
+import service.ManagerBuyerService;
+import service.ManagerGradeService;
+import util.JDBCUtil;
+
+public class ManagerGradeDao {
+	private static ManagerGradeDao instance;
+	private ManagerGradeDao(){}
+	public static ManagerGradeDao getInstance() {
+		if(instance == null){
+			instance = new ManagerGradeDao();
+		}
+		return instance;
+	}
+	JDBCUtil jdbc = JDBCUtil.getInstance();
+}

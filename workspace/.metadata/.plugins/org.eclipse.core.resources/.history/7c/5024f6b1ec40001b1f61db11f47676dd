@@ -1,0 +1,7 @@
+package j_jdbc;
+
+import java.util.Scanner;
+
+public class JDBCBoard_util {
+	Scanner sc = new Scanner(System.in);
+}

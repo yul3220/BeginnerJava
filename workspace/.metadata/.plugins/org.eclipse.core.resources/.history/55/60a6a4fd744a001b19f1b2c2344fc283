@@ -1,0 +1,16 @@
+package service;
+
+import dao.ManagerProdcutDao;
+
+public class ManagerProductService {
+	private static ManagerProductService instance;
+	private ManagerProductService(){}
+	public static ManagerProductService getInstance() {
+		if(instance == null){
+			instance = new ManagerProductService();
+		}
+		return instance;
+	}
+	
+	ManagerProdcutDao managerproductdao = ManagerProdcutDao.getInstance();
+}//

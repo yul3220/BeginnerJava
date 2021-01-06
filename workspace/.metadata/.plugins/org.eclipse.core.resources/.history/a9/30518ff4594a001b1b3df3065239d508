@@ -1,0 +1,69 @@
+package util;
+
+public class View {
+	public static final int HOME = 0;
+	public static final int LOGIN = 1;
+	public static final int JOIN = 2;
+	public static final int BOOKMAIN = 3;
+	public static final int MANAGERLOGIN = 9999;
+	//마이페이지
+	public static final int MYPAGE = 100;
+	public static final int MYPAGE_INFORM_UPDATE = 101;
+	public static final int MYPAGE_PHONE_UPDATE = 102;
+	public static final int MYPAGE_EMAIL_UPDATE = 103;
+	public static final int MYPAGE_ADDR_UPDATE = 104;
+	public static final int MYPAGE_PASSWORD_UPDATE = 105;
+	public static final int MYPAGE_ORDER = 106;
+	public static final int MYPAGE_CHANGEMONEY = 107;
+	public static final int MYPAGE_QNA = 108;
+	public static final int MYPAGE_UNREGISTER = 109;
+	//회원상품
+	public static final int PRODUCT_MAIN = 300;
+	//회원상품-일반
+	public static final int NEWPRODUCT_MAIN = 301;
+	public static final int NEWPRODUCT_VIEW = 302;
+	public static final int NEWPRODUCT_VIEW_DETAIL = 303;
+	public static final int NEWPRODUCT_CART=304;
+	public static final int NEWPRODUCT_ORDER=305;
+	public static final int NEWPRODUCT_SEARCH = 310;
+	public static final int NEWPRODUCT_SEARCH_MENU = 311;
+	public static final int NEWPRODUCT_LPROD = 320;
+	//회원상품-중고
+	public static final int USEDPRODUCT_MAIN = 351;
+	public static final int USEDPRODUCT_VIEW = 352;
+	public static final int USEDPRODUCT_VIEW_DETAIL = 353;
+	public static final int USEDPRODUCT_SEARCH = 360;
+	public static final int USEDPRODUCT_SEARCH_MENU = 361;
+	public static final int USEDPRODUCT_LPROD = 370;
+	//QNA
+	public static final int QNA_QUESTION_LIST = 500;
+	public static final int QNA_QUESTION_VIEW = 501;
+	public static final int QNA_QUESTION_INSERT_FORM = 502;
+	public static final int QNA_QUESTION_UPDATE = 503;
+	public static final int QNA_QUESTION_DELETE = 504;
+	public static final int QNA_ANSWER_LIST = 505;
+	public static final int QNA_ANSWER_VIEW = 506;
+	public static final int QNA_ANSWER_INSERT_FORM = 507;
+	public static final int QNA_ANSWER_UPDATE = 508;
+	public static final int QNA_ANSWER_DELETE = 509;
+	//관리자
+	public static final int MANAGER_MAIN = 1000;
+	//관리자상품-메인
+	public static final int MANAGERPRODUCT_MAIN = 1001;
+	//관리자상품-일반
+	public static final int MANAGERPRODUCT_NEW = 1002;
+	public static final int MANAGERPRODUCT_NEWVIEW = 1003;
+	public static final int MANAGERPRODUCT_NEWSLACKTCOK = 1004;
+	public static final int MANAGERPRODUCT_CATEGORY = 1011;
+	//관리자상품-중고
+	public static final int MANAGERPRODUCT_USED = 1051;
+	public static final int MANAGERPRODUCT_USEDVIEW = 1052;
+	public static final int MANAGERPRODUCT_USEDSLACKTCOK = 1053;
+	//공지사항
+	public static final int NOTICE = 2000;
+	public static final int NOTICE_READ = 2001;
+	public static final int NOTICE_INSERT = 2002;
+	public static final int NOTICE_UPDATE = 2003;
+	public static final int NOTICE_DELETE = 2004;
+
+}

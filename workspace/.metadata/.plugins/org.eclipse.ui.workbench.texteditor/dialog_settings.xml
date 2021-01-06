@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="261" key="DIALOG_WIDTH"/>
+		<item value="345" key="DIALOG_Y_ORIGIN"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="77" key="DIALOG_X_ORIGIN"/>
+		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="isRegEx"/>
+		<item value="true" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="prodCartUp" key="selection"/>
+		<list key="findhistory">
+			<item value="prodCartUp"/>
+			<item value="BASKET_QTY"/>
+			<item value="basket_qty"/>
+			<item value="detailNum"/>
+			<item value="상품담기"/>
+			<item value="BoardService"/>
+			<item value="num"/>
+			<item value="letter"/>
+		</list>
+		<list key="replacehistory">
+			<item value=""/>
+			<item value="BoardDao"/>
+			<item value="board"/>
+			<item value="ranks"/>
+			<item value="scores"/>
+			<item value="min"/>
+			<item value="score"/>
+			<item value="subject"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="458" key="DIALOG_Y_ORIGIN"/>
+		<item value="248" key="DIALOG_X_ORIGIN"/>
+	</section>
+</section>

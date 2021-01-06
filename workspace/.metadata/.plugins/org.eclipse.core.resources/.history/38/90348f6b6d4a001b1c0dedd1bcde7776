@@ -1,0 +1,143 @@
+package dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import util.JDBCUtil;
+
+public class UsedProductDao {
+	private static UsedProductDao instance;
+	private UsedProductDao(){}
+	public static UsedProductDao getInstance() {
+		if(instance == null){
+			instance = new UsedProductDao();
+		}
+		return instance;
+	}
+	
+	private JDBCUtil jdbc = JDBCUtil.getInstance();
+	
+	public List<Map<String, Object>> viewusedProduct(int page, int pagesize){
+		String sql = "SELECT * "
+				+ " FROM"
+				+ " (SELECT ROWNUM RN , A.* , b.BUYER_NAME, C.GRADE_NAME "
+				+ " FROM "
+				+ " (SELECT USEDPROD_ID, USEDPROD_NAME, USEDPROD_PRICE, USEDPROD_WRITER, BUYER_ID, GRADE_ID"
+				+ " FROM USEDPROD) A, BUYER B, GRADE C"
+				+ " WHERE A.BUYER_ID =  B.BUYER_ID"
+				+ " AND A.GRADE_ID = C.GRADE_ID)"
+				+ " WHERE RN BETWEEN (?-1)*?+1 AND ?*?";
+		List<Object> param = new ArrayList<>();
+		param.add(page);
+		param.add(pagesize);
+		param.add(page);
+		param.add(pagesize);
+		return jdbc.selectList(sql, param);
+	}
+	
+	public Map<String, Object> detailusedProduct(int num){
+		String sql = "SELECT * "
+				+ " FROM"
+				+ " (SELECT ROWNUM RN , A.* , b.BUYER_NAME, c.grade_name"
+				+ " FROM "
+				+ " (SELECT usedprod_id, usedprod_name, usedprod_price, usedprod_writer, "
+				+ " usedprod_detail, usedprod_page, buyer_id, grade_id"
+				+ " FROM usedprod) A, buyer b, grade c"
+				+ " where A.buyer_id = b.buyer_id"
+				+ " and A.grade_id = c.grade_id)"
+				+ "WHERE RN = ?";
+
+		List<Object> param = new ArrayList<>();
+		param.add(num);
+		return jdbc.selectOne(sql, param);
+	}
+	
+	public Map<String, Object> prodMax() {
+		String sql = "SELECT COUNT(*) AS COUNT "
+				+ "FROM USEDPROD";
+		return jdbc.selectOne(sql);
+	}
+	
+	public List<Map<String, Object>> usedProductSearch_title(String keyword){
+		String sql = "select a.*, b.buyer_name, c.grade_name"
+				+ " from usedprod a, buyer b, grade c"
+				+ " where a.buyer_id = b.buyer_id"
+				+ " and a.grade_id = c.grade_id"
+				+ " and a.usedprod_name like '%' || ? || '%'";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(keyword);
+		return jdbc.selectList(sql, param);
+	}
+	
+	public List<Map<String, Object>> usedProductSearch_publisher(String keyword){
+		String sql = "select a.*, b.buyer_name, c.grade_name"
+				+ " from usedprod a, buyer b, grade c"
+				+ " where a.buyer_id = b.buyer_id"
+				+ " and a.grade_id = c.grade_id"
+				+ " and b.buyer_name like '%' || ? || '%'";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(keyword);
+		return jdbc.selectList(sql, param);
+	}
+	
+	public List<Map<String, Object>> usedProductSearch_writer(String keyword){
+		String sql = "select a.*, b.buyer_name, c.grade_name"
+				+ " from usedprod a, buyer b, grade c"
+				+ " where a.buyer_id = b.buyer_id"
+				+ " and a.grade_id = c.grade_id"
+				+ " and a.usedprod_writer like '%' || ? || '%'";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(keyword);
+		return jdbc.selectList(sql, param);
+	}
+	
+	public List<Map<String, Object>> usedProductlprodcheck(){
+		String sql = "select *"
+				+ " from lprod";
+		
+		return jdbc.selectList(sql);
+	}
+	
+	public List<Map<String, Object>> usedProductlprodshow(Object lprodid) {
+		String sql = "select a.*, c.buyer_name, d.grade_name"
+				+ " from usedprod a, lprod b, buyer c, grade d"
+				+ " where a.lprod_gu = b.lprod_gu"
+				+ " and a.buyer_id = c.buyer_id"
+				+ " and a.grade_id = d.grade_id"
+				+ " and a.lprod_gu = ?";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(lprodid);
+		return jdbc.selectList(sql, param);
+	}
+	
+	public Map<String, Object> usedProductSearch_detail(Object prodid) {
+		String sql = "select a.*, b.buyer_name, c.grade_name"
+				+ " from usedprod a, buyer b, grade c"
+				+ " where a.buyer_id = b.buyer_id"
+				+ " and a.grade_id = c.grade_id"
+				+ " and a.usedprod_id = ?";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(prodid);
+		
+		return jdbc.selectOne(sql, param);
+	}
+	
+	public Map<String, Object> usedProductlprod_detail(Object prodid) {
+		String sql = "select a.*, c.buyer_name, d.grade_name"
+				+ " from usedprod a, lprod b, buyer c, grade d"
+				+ " where a.lprod_gu = b.lprod_gu"
+				+ " and a.buyer_id = c.buyer_id"
+				+ " and a.grade_id = d.grade_id"
+				+ " and a.usedprod_id = ?";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(prodid);
+		return jdbc.selectOne(sql, param);
+	}
+}//

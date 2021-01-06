@@ -1,0 +1,21 @@
+package j_jdbc;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class test {
+
+	public static void main(String[] args) {
+		JDBCUtil jdbc = JDBCUtil.getInstance();
+
+		String sql = "select * from  tb_jdbc_board";
+		
+		
+		List<Map<String, Object>> list = jdbc.selectList(sql);
+		System.out.println(list);
+		
+	}
+
+}

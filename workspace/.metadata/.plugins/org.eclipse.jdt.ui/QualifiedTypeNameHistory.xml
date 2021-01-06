@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="Yuri.Product"/>
+<fullyQualifiedTypeName name="Yuri.Shoes"/>
+<fullyQualifiedTypeName name="Yuri.Shopping"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="e_oop.ScanUtil"/>
+<fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
+<fullyQualifiedTypeName name="java.io.FileOutputStream"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.lang.NullPointerException"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="i_collection.ArrayListClass"/>
+<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="dao.UserDao"/>
+<fullyQualifiedTypeName name="dao.BoardDao"/>
+<fullyQualifiedTypeName name="controller.Controller"/>
+<fullyQualifiedTypeName name="service.BoardService"/>
+<fullyQualifiedTypeName name="service.NewProductService"/>
+<fullyQualifiedTypeName name="dao.NewProductDao"/>
+<fullyQualifiedTypeName name="service.ProductService"/>
+<fullyQualifiedTypeName name="service.UsedProductService"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="dao.ManagerProdcutDao"/>
+<fullyQualifiedTypeName name="service.ManagerProductService"/>
+<fullyQualifiedTypeName name="util.ScanUtil"/>
+<fullyQualifiedTypeName name="util.View"/>
+<fullyQualifiedTypeName name="util.JDBCUtil"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,12 @@
+package dao;
+
+public class ManagerProdcutDao {
+	private static ManagerProdcutDao instance;
+	private ManagerProdcutDao(){}
+	public static ManagerProdcutDao getInstance() {
+		if(instance == null){
+			instance = new ManagerProdcutDao();
+		}
+		return instance;
+	}
+}

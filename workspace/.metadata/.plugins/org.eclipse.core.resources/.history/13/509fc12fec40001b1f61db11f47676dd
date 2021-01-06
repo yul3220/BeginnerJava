@@ -1,0 +1,243 @@
+package j_jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import e_oop.ScanUtil;
+
+public class JDBCBoard {
+	Scanner sc = new Scanner(System.in);
+	int count = 0;
+	static String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	static String user = "JYR03";
+	static String password = "java";
+
+	static Connection con = null; 
+	static PreparedStatement ps = null;
+	static ResultSet rs = null; 
+
+	public static void main(String[] args) {
+		/*
+		 * 오라클 데이터베이스에 게시판 테이블을 생성하고, 게시판 프로그램을 만들어주세요.
+		 * 테이블 : TB_JDBC_BOARD
+		 * 컬럼 : BOARD_NO, TITLE, CONTENT, USER_ID, REG_DATE*/
+
+		JDBCBoard boards = new JDBCBoard();
+		boards.start();
+	}
+
+	void start() {
+		try {
+			while(true){
+				System.out.println();
+				System.out.println("=========================================================");
+				System.out.println("번호\t제목\t\t작성자\t작성일");
+				System.out.println("=========================================================");
+				String sql = "select * from tb_jdbc_board order by board_no desc";
+				con = DriverManager.getConnection(url, user, password);
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
+				while(rs.next()){
+					System.out.println(rs.getObject("Board_no") + "\t"
+					+ rs.getObject("title") + "\t\t"
+					+ rs.getObject("user_id") + "\t"
+					+ rs.getObject("reg_date") + "\t");
+				}
+				System.out.println("=========================================================");
+				System.out.println("1.조회\t2.등록\t3.종료");
+				System.out.print("입력> ");
+				int input = ScanUtil.nextInt();
+
+				switch (input) {
+				case 1:
+					sign();
+					break;
+				case 2:
+					signuser();
+					break;
+				case 3:
+					System.exit(3);
+					break;
+				default:
+					System.out.println("값을 잘못입력했습니다. 다시 입력해주세요.");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null) try{rs.close();} catch(Exception e) {}
+			if(ps != null) try{ps.close();} catch(Exception e) {}
+			if(con != null) try{con.close();} catch(Exception e) {}
+		}
+	}//start끝
+
+	void sign(){
+		System.out.print("조회하고 싶은 번호를 입력> ");
+		int sign = Integer.parseInt(sc.nextLine());
+		try {
+			con = DriverManager.getConnection(url, user, password);
+
+			String sql = "select * from tb_jdbc_board where board_no = ? ";
+
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, sign);
+
+			rs = ps.executeQuery();
+
+			while(rs.next()){
+				System.out.println("-------------------------------");
+				System.out.println("번호 : "+rs.getObject("board_no"));
+				System.out.println("-------------------------------");
+				System.out.println("이름 : "+rs.getObject("user_id"));
+				System.out.println("등록날짜 : "+rs.getObject("reg_date"));
+				System.out.println("--------------------------------");
+				System.out.println("제목 : "+rs.getObject("title"));
+				System.out.println("내용 : "+rs.getObject("content"));
+				System.out.println("-------------------------------");
+			}
+			
+			System.out.println();
+			System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+			System.out.println("1.수정\t2.삭제\t3.나가기");
+			System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+			System.out.print("원하는 항목의 번호를 입력 > ");
+			System.out.println();
+			int input2 = Integer.parseInt(sc.nextLine());
+			switch(input2){
+			case 1:
+				change();
+				break;
+			case 2:
+				delete();
+				break;
+			case 3:
+				break;
+			default:
+				System.out.println("값을 잘못입력했습니다. 다시 입력해주세요.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+	}
+
+	void change() {
+		System.out.print("바꾸고싶은 글의 번호를 입력> ");
+		int number = Integer.parseInt(sc.nextLine());
+		System.out.print("바꾸고 싶은 제목을 입력> ");
+		String title = sc.nextLine();
+		System.out.print("바꾸고 싶은 내용을 입력> ");
+		String content = sc.nextLine();
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "update tb_jdbc_board set title=?,content = ? where board_no=?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, title);
+			ps.setString(2, content);
+			ps.setInt(3, number);
+			
+			int result = ps.executeUpdate();
+			if(result>0){
+				System.out.println("수정 완료!!!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+		
+	}
+
+	void delete() {
+		System.out.print("삭제하고싶은 글의 번호를 입력> ");
+		int number = Integer.parseInt(sc.nextLine());
+		
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "delete tb_jdbc_board where board_no=?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, number);
+			
+			int result = ps.executeUpdate();
+			if(result>0){
+				System.out.println("삭제 완료!!!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+		
+	}
+	
+	void signuser(){
+		int boardNo = createBoardNo();
+		System.out.print("제목 > ");
+		String title = sc.nextLine();
+		System.out.print("내용> ");
+		String content = sc.nextLine();
+		System.out.print("작성자> ");
+		String username = sc.nextLine();
+		try {
+			con = DriverManager.getConnection(url, user, password);
+
+			String sql = "insert into tb_jdbc_board values (? ,?, ?, ?,sysdate)";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, boardNo);
+			ps.setString(2, title);
+			ps.setString(3, content);
+			ps.setString(4, username);
+
+			int result = ps.executeUpdate();
+			if(0 < result){
+				System.out.println("등록이 완료되었습니다.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+	}//sign끝
+
+	int createBoardNo() {
+		int boardNo = 0;
+		try {
+			con = DriverManager.getConnection(url, user, password);
+
+			String sql = "SELECT NVL(MAX(BOARD_NO), 0) + 1 AS BOARD_NO"
+					+ " FROM TB_JDBC_BOARD";
+			ps = con.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			while(rs.next()){
+				boardNo = rs.getInt("BOARD_NO");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close(); } catch(Exception e) {}
+			if(ps != null) try { ps.close(); } catch(Exception e) {}
+			if(con != null) try { con.close(); } catch(Exception e) {}
+		}
+		return boardNo;
+	}//createboardno끝
+	
+	
+}//
+
+
+

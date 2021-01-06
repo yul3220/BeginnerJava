@@ -1,0 +1,38 @@
+package service;
+
+import util.ScanUtil;
+import util.View;
+import dao.ManagerProdcutDao;
+
+public class ManagerProductService {
+	private static ManagerProductService instance;
+	private ManagerProductService(){}
+	public static ManagerProductService getInstance() {
+		if(instance == null){
+			instance = new ManagerProductService();
+		}
+		return instance;
+	}
+	
+	ManagerProdcutDao managerproductdao = ManagerProdcutDao.getInstance();
+	
+	public int ManagerNewProductMain(){
+		System.out.println("-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-");
+		System.out.println("1.등록\t2.수정\t3.삭제\t0.돌아가기");
+		System.out.println("-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-");
+		System.out.print("번호 입력 : ");
+		int input = ScanUtil.nextInt();
+		switch(input){
+			case 1: break;
+			case 2: break;
+			case 3: break;
+			case 0: break;
+		}
+		return View.MANAGERPRODUCT_MAIN;
+	}
+	
+	public int ManagerNewProductInsert(){
+		
+		return 0;
+	} 
+}//

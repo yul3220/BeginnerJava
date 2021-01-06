@@ -1,0 +1,74 @@
+package j_jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class JDBCBoard_util {
+	Scanner sc = new Scanner(System.in);
+	JDBCUtil jdbc = JDBCUtil.getInstance();
+	List<Object> param = new ArrayList();
+	List<Map<String, Object>> list;
+	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "JYR03";
+	String password = "java";
+
+	Connection con = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+	
+	public static void main(String[] args) {
+		JDBCBoard_util boards = new JDBCBoard_util();
+		boards.start();
+	}
+	
+	private void start() {
+		System.out.println();
+		System.out.println("=========================================================");
+		System.out.println("번호\t제목\t\t작성자\t작성일");
+		System.out.println("=========================================================");
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		try {
+			con = DriverManager.getConnection(url, user, password);//sql과 연결
+
+			String sql = "select * from tb_jdbc_board";
+			ps = con.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData md = rs.getMetaData();
+
+			int columnCount = md.getColumnCount();
+
+			while(rs.next()){
+				Map<String, Object> row = new HashMap<>();
+				for(int i = 1; i<columnCount; i++){
+					String key = md.getColumnName(i);
+					Object value = rs.getObject(key);
+					row.put(key, value);
+					System.out.println(key);
+					System.out.println(value);
+				}
+				list.add(row);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+
+	}
+}

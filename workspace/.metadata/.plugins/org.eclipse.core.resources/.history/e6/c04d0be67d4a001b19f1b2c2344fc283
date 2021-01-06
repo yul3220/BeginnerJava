@@ -1,0 +1,31 @@
+package dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import util.JDBCUtil;
+
+public class ManagerProdcutDao {
+	private static ManagerProdcutDao instance;
+	private ManagerProdcutDao(){}
+	public static ManagerProdcutDao getInstance() {
+		if(instance == null){
+			instance = new ManagerProdcutDao();
+		}
+		return instance;
+	}
+	
+	JDBCUtil jdbc = JDBCUtil.getInstance();
+	
+	public List<Map<String, Object>> newproductname(String name) {
+		String sql = "select *"
+				+ " from prod"
+				+ " where prod_name like %||?||%";
+		
+		List<Object> param = new ArrayList<>();
+		param.add(name);
+		return jdbc.selectList(sql, param);
+	}
+	
+	
+}//

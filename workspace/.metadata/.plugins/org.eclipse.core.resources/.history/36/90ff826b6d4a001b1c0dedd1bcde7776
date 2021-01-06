@@ -1,0 +1,28 @@
+package service;
+
+import dao.ManagerGradeDao;
+
+
+public class ManagerGradeService {
+	private static ManagerGradeService instance;
+	private ManagerGradeService(){}
+	public static ManagerGradeService getInstance() {
+		if(instance == null){
+			instance = new ManagerGradeService();
+		}
+		return instance;
+	}
+	ManagerGradeDao managerGradeDao = ManagerGradeDao.getInstance();
+	public int gradeMain() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int gradeInsert() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int gradeDelete() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}

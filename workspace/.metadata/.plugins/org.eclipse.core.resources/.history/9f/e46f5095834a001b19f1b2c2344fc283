@@ -1,0 +1,145 @@
+package service;
+
+import java.util.List;
+import java.util.Map;
+
+import util.ScanUtil;
+import util.View;
+import controller.Controller;
+import dao.QuestionDao;
+
+public class QnaQuestionService {
+
+	private static final Object QA_NO = null;
+	private static final String Question = null;
+	private static QnaQuestionService instance;
+	private QnaQuestionService(){}
+	public static QnaQuestionService getInstance() {
+		if(instance == null){
+			instance = new QnaQuestionService();
+		}
+		return instance;
+	}
+	private int currentQuestionNo;
+
+	public int QuestionList(){
+		List<Map<String, Object>> qnaQuestion = QuestionDao.selectQnaQuestion();
+
+		System.out.println("=========================================");
+		System.out.println("글번호\t제목\t내용\t작성일");
+		System.out.println("-----------------------------------------");
+		for(int i = 0; i < qnaQuestion.size(); i++){
+			Map<String, Object> question = qnaQuestion.get(i);
+			System.out.println(question.get(QA_NO) +"\t"
+					+question.get("Q_TITLE") + "\t"
+					+question.get("Q_CONTENT") + "\t"
+					+question.get("Q_DATE"));
+
+		}
+		System.out.println("=========================================");
+		System.out.println("1.조회\t2.등록\t0.돌아가기");
+		System.out.print("입력 >");
+
+		int input = ScanUtil.nextInt();
+
+		switch(input){
+		case 1 :
+			System.out.print("게시글 번호 입력");
+			currentQuestionNo = ScanUtil.nextInt();
+			return View.QNA_QUESTION_VIEW;
+		case 2 :
+			return View.QNA_QUESTION_INSERT_FORM;
+		case 0 :
+			return View.BOOKMAIN;
+
+		} 
+		return View.QNA_QUESTION_LIST;
+	}
+	public int QuestionView(){
+		System.out.println("-----------------------------------------");
+		Map<String, Object> question = QuestionDao.viewQnaQuestionList(currentQuestionNo);
+		if(Question == null){
+			System.out.println("게시글이 없습니다.");
+		}else{
+			return View.QNA_QUESTION_LIST;
+		}
+		System.out.println("번호\t :" + question.get("QA_NO"));
+		System.out.println("작성자id\t :" + question.get("MEM_ID"));
+		System.out.println("작성일\t :" + question.get("Q_DATE"));
+		System.out.println("제목\t :" + question.get("Q_TITLE"));
+		System.out.println("내용\t :" + question.get("Q_CONTENT"));
+		System.out.println("-----------------------------------------");
+		System.out.println("1.수정\t2.삭제\t0.목록");
+		System.out.print("입력 >");
+		int input = ScanUtil.nextInt();
+
+		switch (input){
+		case 1 :
+			return View.QNA_QUESTION_UPDATE;
+		case 2 :
+			return View.QNA_QUESTION_DELETE;
+		case 0 :
+			break;
+		}
+		return View.QNA_QUESTION_VIEW;
+	}
+
+	public int questionInsert(Map<String,Object> LoginMember){
+
+		System.out.print("제목 :");
+		String title = ScanUtil.nextLine();
+		System.out.println("내용 :");
+		String content = ScanUtil.nextLine();
+		int result = QuestionDao.insertQuestion(title, content,LoginMember);
+		if(0 < result){
+			System.out.println("게시글 등록");
+		}else{
+			System.out.println("게시글 등록 실패");
+		}
+		return View.QNA_QUESTION_LIST;
+	}
+
+	public int questionUpdate(Map<String,Object> LoginMember){
+		System.out.println("제목 :");
+		String title = ScanUtil.nextLine();
+		System.out.println("내용:");
+		String content = ScanUtil.nextLine();
+		int result = QuestionDao.updateQuestion(title, content, currentQuestionNo, LoginMember);
+		if(0 < result){
+			System.out.println("수정 성공");
+		}else{
+			System.out.println("수정 실패");
+		}
+		return View.QNA_QUESTION_LIST;
+	}
+
+	public int questionDelete(Map<String, Object> LoginMember){
+		int result = QuestionDao.deleteQuestion(currentQuestionNo, LoginMember);
+		if(0 < result){
+			System.out.println("삭제 성공");
+		}else{
+			System.out.println("삭제 실패");
+		}
+
+
+		return View.QNA_QUESTION_LIST;
+	}
+	public  int QnaQuestionServiceList() {
+		
+		return 0;
+	}
+	
+	public  int QnaAnswerServiceList() {
+		
+		return 0;
+	}
+	public  int QnaAnswerServiceView() {
+		
+		return 0;
+	}
+
+
+
+
+}
+

@@ -1,0 +1,36 @@
+package j_jdbc;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class test {
+
+	public static void main(String[] args) {
+		JDBCUtil jdbc = JDBCUtil.getInstance();
+
+		String sql = "select * from  tb_jdbc_board";
+		
+		
+		
+		List<Map<String, Object>> list = jdbc.selectList(sql);
+		System.out.println(list);
+		
+		for(int i = 0; i< list.size();i++){
+			Map<String, Object> map = list.get(i);
+			
+			System.out.println(map.get("BOARD_NO")+"\t"
+			+map.get("TITLE")+"\t\t"
+			+map.get("USER_ID")+"\t"
+			+map.get("REG_DATE"));
+		}
+		sql = "SELECT NVL(MAX(BOARD_NO), 0) + 1 AS BOARD_NO"
+				+ " FROM TB_JDBC_BOARD";
+		Map<String, Object> boardmap = jdbc.selectOne(sql);
+		int boardNo = 0;
+		boardNo = (int) boardmap.get("BOARD_NO");
+		System.out.println(boardmap);
+		
+	}//main
+}//

@@ -1,0 +1,18 @@
+package dao;
+
+import util.JDBCUtil;
+
+public class ManagerProdcutDao {
+	private static ManagerProdcutDao instance;
+	private ManagerProdcutDao(){}
+	public static ManagerProdcutDao getInstance() {
+		if(instance == null){
+			instance = new ManagerProdcutDao();
+		}
+		return instance;
+	}
+	
+	JDBCUtil jdbc = JDBCUtil.getInstance();
+	
+	
+}//

@@ -1,0 +1,261 @@
+package j_jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class JDBCUtil {
+	//sql를 쓰기위해 매번 try catch문을 줄이기 위해 사용
+	//싱글톤 패턴 : 인스턴스의 생성을 제한하여 하나의 인스턴스만 사용하는 디자인 패턴
+	//디자인 패턴 : 클래스를 설계하는 방식
+	//디자인패턴 => 여러가지 존재 (검색해서 한번 보기)
+	//어디서 호출을 하든 객체가 하나만 만들어지게 해야함
+	//이클래스내에서 객체를 생성해서 객체를 빌려주는 형식을 띄움
+
+	//다른클래스에서 객체를 생성하지 못하게 생성자를 하나 만들어줌(private를 통해 제한함)
+	private JDBCUtil(){
+		//이 클래스내에서 객체를 생성
+
+	}
+
+	//인스턴스를 보관할 변수
+	private static JDBCUtil instance;
+
+	//인스턴스를 빌려주는 메서드
+	public static JDBCUtil getInstance(){
+		if(instance == null){//처음에는 인스턴스가 널이기 때문에 객체를 새로만듬
+			instance = new JDBCUtil();
+		}
+		return instance;//인스턴스를 리턴
+		//처음이후는 인스턴스가 처음이 아니기 때문에 계속 인스턴스를 빌려주는 형태
+	}
+	//객체화 => 인스턴스화 같은 말
+
+	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "JYR03";
+	String password = "java";
+
+	Connection con = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+
+	/*
+	 *  Map<String, Object> selectOne(String sql)
+	 *  Map<String, Object> selectOne(String sql, List<Object> param)
+	 *  List<Map<String, Object>> selectList(String sql)
+	 *  List<Map<String, Object>> selectList(String sql, List<Object> param)
+	 *  int update(String sql)
+	 *  int update(String sql, List<Object> param)
+	 */
+	//6개의 메소드를 통해 jdbc를 쉽게 사용할수 있게끔 함
+	//param은 sql안에 ?가 존재할때 사용하기 위한 것
+	//?가 없을 떄 사용하는 메소드와 ?가 존재할때 사용하는 메소드 2종류 존재
+	//selectone => row한줄만 조회 / haspmap을통해 한줄로 표현 / 그래서 타입명이 map(hashmap도 가능)
+	//list => 여러줄이 조회하겠다 / list안 map이 들어있는경우 테이블 형태
+	//int update => insert, delete, update
+	//쿼리를 실행할때 몇개의 행의 반환받는지를 아는데 그것을 리턴해주면 됨
+	//sql를 통해 전달후 resultset통해 값을 반환
+
+
+	Map<String, Object> selectOne(String sql){
+		Map<String, Object> map = new HashMap<>(); 
+		try {
+			con = DriverManager.getConnection(url, user, password);//sql과 연결
+
+			ps = con.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData md = rs.getMetaData();
+
+			int columnCount = md.getColumnCount();
+
+			while(rs.next()){
+				for(int i = 1; i<=columnCount; i++){
+					String key = md.getColumnName(i);
+					Object value = rs.getObject(key);
+					map.put(key, value);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+
+		return map; 
+	}//selectone ?없는버전
+
+	Map<String, Object> selectOne(String sql, List<Object> param){
+		Map<String, Object> map = new HashMap<>();
+		try {
+			con = DriverManager.getConnection(url, user, password);//sql과 연결
+
+			ps = con.prepareStatement(sql);
+
+			for(int i = 0; i < param.size(); i++){
+				ps.setObject(i+1, param.get(i));
+			}
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData md = rs.getMetaData();
+
+			int columnCount = md.getColumnCount();
+
+			while(rs.next()){
+				for(int i = 1; i<=columnCount; i++){
+					String key = md.getColumnName(i);
+					Object value = rs.getObject(key);
+					map.put(key, value);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+
+		return map;
+	}//selectOne ?있는버전
+
+	List<Map<String, Object>> selectList(String sql){
+
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		try {
+			con = DriverManager.getConnection(url, user, password);//sql과 연결
+
+			ps = con.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData md = rs.getMetaData();
+
+			int columnCount = md.getColumnCount();
+
+			while(rs.next()){
+				Map<String, Object> row = new HashMap<>();
+				for(int i = 1; i<=columnCount; i++){
+					String key = md.getColumnName(i);
+					Object value = rs.getObject(key);
+					row.put(key, value);
+				}
+				list.add(row);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+
+		return list;
+	}//selectlist 끝
+
+	List<Map<String, Object>> selectList(String sql, List<Object> param){
+		//import java.util.List가져올것
+		//처음으로 해야하는게 리턴값이 있을때 무엇이 리턴할것인지 생각
+		//쿼리를 조회한 결과
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		try {
+			con = DriverManager.getConnection(url, user, password);//sql과 연결
+
+			ps = con.prepareStatement(sql);
+
+			for(int i = 0; i < param.size(); i++){//물음표를 세팅
+				ps.setObject(i+1, param.get(i));//물음표가 어떤타입일지 모르기때문에 Object
+			}
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData md = rs.getMetaData();
+
+			int columnCount = md.getColumnCount();
+
+			while(rs.next()){
+				//해쉬맵을 만들어서 값을 저장
+				//sql을 통해 만들어진 한줄씩 row 저장
+				Map<String, Object> row = new HashMap<>();
+				for(int i = 1; i<=columnCount; i++){
+					//컬럼명으로 키 사용
+					String key = md.getColumnName(i);//metadata를 통해 컬럼명을 가져옴
+					Object value = rs.getObject(key);//키를 통해 값을 가져옴
+					row.put(key, value);
+				}
+				list.add(row);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+
+		return list;
+	}//selectlist ?버전 끝
+
+	int update(String sql){
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			
+			ps = con.prepareStatement(sql);
+			
+			result = ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+		
+		return result;
+	}
+	
+	int update(String sql, List<Object> param){
+		int result = 0;
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			
+			ps = con.prepareStatement(sql);
+			
+			for(int i = 0; i < param.size(); i++){
+				ps.setObject(i+1, param.get(i));
+			}
+			
+			result = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs != null)try{rs.close();}catch(Exception e){}
+			if(ps != null)try{rs.close();}catch(Exception e){}
+			if(con != null)try{rs.close();}catch(Exception e){}
+		}
+		
+		return result;
+	}
+	
+}//
